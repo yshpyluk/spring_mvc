@@ -14,6 +14,6 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMessage(ModelMap modelMap) {
 		modelMap.addAttribute("message", "Hello app world");
-		return "hello";
+		return "user";
 	}
 }
