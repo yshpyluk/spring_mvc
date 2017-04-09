@@ -1,7 +1,7 @@
-package com.example.core.user.service;
+package com.example.service;
 
 
-import com.example.core.user.User;
+import com.example.entity.User;
 
 import java.util.List;
 
