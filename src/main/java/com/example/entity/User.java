@@ -1,22 +1,14 @@
-package com.example.core.user;
+package com.example.entity;
 
 /**
  * Created by yshpyluk on 4/5/17.
  */
 public class User {
-	private String name;
 	private int id;
+	private String name;
 
-	public User(String name, int id) {
-		this.name = name;
+	public User(int id, String name) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -26,5 +18,13 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -1,5 +1,7 @@
 package com.example;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +12,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class Application {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -18,12 +21,12 @@ public class Application {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext context) {
         return a -> {
-            System.out.println("Inspecting beans provided by Spring Boot:");
+            LOGGER.info("Inspecting beans provided by Spring Boot:");
 
             String[] beanNames = context.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName: beanNames) {
-                System.out.println("BeanName: " + beanName);
+                LOGGER.info("BeanName: " + beanName);
             }
         };
     }

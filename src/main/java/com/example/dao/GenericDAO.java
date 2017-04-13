@@ -1,4 +1,4 @@
-package com.example.core.general;
+package com.example.dao;
 
 import java.util.List;
 
