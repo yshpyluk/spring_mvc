@@ -6,12 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by yshpyluk on 4/5/17.
  */
 @Repository
 public class UserInMemoryDAO implements GenericDAO<User> {
+
     private final List<User> users = new ArrayList<>();
 
     @Override
@@ -20,8 +22,11 @@ public class UserInMemoryDAO implements GenericDAO<User> {
     }
 
     @Override
-    public User get(int i) {
-        return users.get(i);
+    public User get(Long i) {
+        return users.stream()
+                .filter(u -> Objects.equals(u.getId(), i))
+                .findFirst()
+                .get();
     }
 
     @Override

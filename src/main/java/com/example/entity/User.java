@@ -1,30 +1,30 @@
 package com.example.entity;
 
+import javax.persistence.*;
+
 /**
  * Created by yshpyluk on 4/5/17.
  */
+@Entity
+@Table(name = "users")
 public class User {
-	private int id;
+
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@Column(name = "name")
 	private String name;
 
-	public User(int id, String name) {
-		this.id = id;
+	public User(String name) {
 		this.name = name;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }

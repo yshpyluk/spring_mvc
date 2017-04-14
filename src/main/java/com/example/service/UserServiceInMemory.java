@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
 /**
  * Created by yshpyluk on 4/5/17.
  */
-@Service
+@Service("in_memory_service")
 public class UserServiceInMemory implements UserService {
-
-    private final AtomicInteger counter = new AtomicInteger(0);
 
     @Autowired
     private GenericDAO<User> userDao;
@@ -28,23 +27,18 @@ public class UserServiceInMemory implements UserService {
     }
 
     @Override
-    public User get(int i) {
+    public User get(Long i) {
         return userDao.get(i);
     }
 
     @Override
     public void add(String name) {
-        userDao.add(new User(name, counter.getAndIncrement()));
+        userDao.add(new User(name));
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(Long id) {
         removeUserByPredicate(u -> u.getId() == id);
-    }
-
-    @Override
-    public void remove(String name) {
-       removeUserByPredicate(u -> u.getName().toLowerCase().equals(name.toLowerCase()));
     }
 
     private void removeUserByPredicate(Predicate<User> userPredicate) {
@@ -55,12 +49,7 @@ public class UserServiceInMemory implements UserService {
     }
 
     @Override
-    public User update(int id) {
-        return null;
-    }
-
-    @Override
-    public User update(String name) {
+    public User update(Long id) {
         return null;
     }
 }

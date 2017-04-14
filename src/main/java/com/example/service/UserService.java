@@ -11,10 +11,8 @@ import java.util.List;
 public interface UserService {
 
 	List<User> getAllUsers();
-	User get(int i);
+	User get(Long id);
 	void add(String name);
-	void remove(int id);
-	void remove(String name);
-	User update(int id);
-	User update(String name);
+	void remove(Long id);
+	User update(Long id);
 }
