@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import javax.persistence.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by yshpyluk on 4/5/17.
@@ -9,6 +10,8 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
 
+	private static AtomicLong counter = new AtomicLong();
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -16,7 +19,12 @@ public class User {
 	@Column(name = "name")
 	private String name;
 
+	User() {
+		//for hibernate
+	}
+
 	public User(String name) {
+		this.id = counter.incrementAndGet();
 		this.name = name;
 	}
 
@@ -26,5 +34,9 @@ public class User {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

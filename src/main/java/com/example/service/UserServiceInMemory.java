@@ -33,7 +33,7 @@ public class UserServiceInMemory implements UserService {
 
     @Override
     public void add(String name) {
-        userDao.add(new User(name));
+//        userDao.add(new User(name));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class UserServiceInMemory implements UserService {
     }
 
     @Override
-    public User update(Long id) {
+    public User update(User id) {
         return null;
     }
 }

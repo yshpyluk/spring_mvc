@@ -23,21 +23,26 @@ public class UserServiceH2Db implements UserService {
 
 	@Override
 	public User get(Long id) {
-		return null;
+		return userRepository.findOne(id);
 	}
 
 	@Override
 	public void add(String name) {
-
+		User user = new User(name);
+		userRepository.save(user);
 	}
 
 	@Override
 	public void remove(Long id) {
-
+		userRepository.delete(id);
 	}
 
 	@Override
-	public User update(Long id) {
-		return null;
+	public User update(User user) {
+		User updateEntity = userRepository.findOne(user.getId());
+		updateEntity.setName(user.getName());
+
+		userRepository.save(updateEntity);
+		return userRepository.findOne(user.getId());
 	}
 }
