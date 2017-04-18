@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GroupControllerTest {
+public class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -61,19 +61,20 @@ public class GroupControllerTest {
 		// When
 		mockMvc.perform(post("/group/user/add")
 				.content(requestBody)
-				.contentType(MediaType.TEXT_HTML))
+				.contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andDo(print());
 
 		// Then
 		assertEquals(1, userRepository.count());
+		//TODO add assert of user field set like were in UserDro posted
 	}
 
 	@Test
 	public void testAddUser_conflict() throws Exception {
 		// Given
-		User exisitingUser = User.builder().name("TEST_USER").build();
-		userRepository.save(exisitingUser);
-		String requestBody = asJsonString(exisitingUser);
+		User existingUser = User.builder().name("TEST_USER").build();
+		userRepository.save(existingUser);
+		String requestBody = asJsonString(existingUser.convertToDto());
 
 		// When
 		ResultActions actions = mockMvc.perform(post("/group/user/add")
@@ -83,53 +84,17 @@ public class GroupControllerTest {
 		// Then
 		assertEquals(1, userRepository.count());
 		actions.andExpect(status().isConflict());
-
-		actions.andExpect(jsonPath("$.child.elem.emem.fiel2", CoreMatchers.is("TEST_USER")));
-
 	}
+
+	// 	Example of to use assertion
+	//		actions.andExpect(jsonPath("$.child.elem.emem.fiel2", CoreMatchers.is("TEST_USER")));
 
 	@Test
-	public void testUpdateUser() throws Exception {
-		// Given
-		User exisitingUser = User.builder().name("TEST_USER").build();
-		String requestBody = asJsonString(exisitingUser);
+	public void testAddUser_validationFails() throws Exception {
 
-		// When
-		mockMvc.perform(put("/group/user/update")
-				.content(requestBody).contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andDo(print());
-
-		// Then
-		assertEquals(1, userRepository.count());
 	}
 
-
-	@Test
-	public void testGroupEndpoint() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/group"))
-				.andExpect(status().isOk())
-				.andExpect(content().string(equalTo("Welcome! You are on Group page!!!")));
-	}
-
-	@Test
-	public void testAddUserEndpoint() throws Exception {
-		int initialCount = userRepository.findAll().size();
-
-		MvcResult result = mockMvc.perform(post("/group/user/Jakob"))
-				.andExpect(status().isOk())
-				.andReturn();
-
-		Assert.assertTrue(result.getResponse().getContentAsString().contains("John was added"));
-		assertEquals( "Expected that number of users increased by 1 after adding new User",
-				initialCount + 1,
-				userRepository.findAll().size());
-
-		User user = userRepository.findAll().stream()
-				.filter(u -> u.getName().equals("Jakob"))
-				.findFirst()
-				.get();
-		Assert.assertNotNull("Expected that user was added after add operation", user);
-	}
+	//TODO add tests for all other endpoint/methods
 
 	public String asJsonString(Object o) throws Exception {
 		return objectMapper.writeValueAsString(o);

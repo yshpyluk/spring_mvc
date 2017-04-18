@@ -10,7 +10,7 @@ import java.util.Optional;
  * Created by yshpyluk on 4/14/17.
  */
 @Service
-public class UserServiceH2Db {
+public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;

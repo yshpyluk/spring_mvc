@@ -1,8 +1,9 @@
-package com.example.domain.entity;
+package com.example.domain.user;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -26,5 +28,10 @@ public class User {
 	@Column(name = "name")
 	@NotNull
 	private String name;
+
+	public UserDto convertToDto() {
+		return UserDto.builder().name(this.name).build();
+	}
+
 
 }

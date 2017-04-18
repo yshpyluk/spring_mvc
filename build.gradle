@@ -29,7 +29,9 @@ targetCompatibility = 1.8
 
 dependencies {
 //    runtime
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile('org.springframework.boot:spring-boot-starter-web')
+//    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile 'org.projectlombok:lombok:1.16.16'
 
 //    jpa
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -37,5 +39,6 @@ dependencies {
 
 //    tests
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile('com.jayway.jsonpath:json-path')
     testCompile("junit:junit")
 }
