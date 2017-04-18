@@ -1,9 +1,11 @@
-package com.example.controller;
+package com.example.domain.user;
 
-import com.example.entity.User;
-import com.example.service.UserService;
+import com.example.domain.user.User;
+import com.example.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,10 +43,27 @@ public class GroupController {
 		return String.format("User %s was added", userName);
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/user/add")
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public void addUser(@RequestBody @Validated User user) {
+		if (userService.getByName(user.getName()).isPresent()) {
+			throw new RuntimeException("User exists");
+		}
+		userService.add(user);
+	}
+
 	@RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
 	public String removeUser(@PathVariable Long userId) {
 		User user = userService.get(userId);
 		userService.remove(userId);
 		return String.format("User %s was deleted", user.getName());
 	}
+
+	@ExceptionHandler(RuntimeException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public String handleError(Exception ex) {
+		return ex.getMessage();
+	}
+
 }
