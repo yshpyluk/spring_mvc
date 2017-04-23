@@ -1,9 +1,11 @@
 package com.example.domain.user;
 
+import com.example.domain.user.exception.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -31,15 +33,22 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void remove(Long id) {
+	public void remove(Long id) throws NoSuchUserException {
+		User user = get(id);
+		if (user == null) {
+			throw new NoSuchUserException(user.getId());
+		}
 		userRepository.delete(id);
 	}
 
-	public User update(User user) {
-		User updateEntity = userRepository.findOne(user.getId());
-		updateEntity.setName(user.getName());
+	public User update(User user) throws NoSuchUserException {
+		User updateEntity = get(user.getId());
+		if (updateEntity == null) {
+			throw new NoSuchUserException(user.getId());
+		}
 
+		updateEntity.setName(user.getName());
 		userRepository.save(updateEntity);
-		return userRepository.findOne(user.getId());
+		return get(user.getId());
 	}
 }

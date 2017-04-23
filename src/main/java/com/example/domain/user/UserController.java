@@ -1,17 +1,11 @@
 package com.example.domain.user;
 
+import com.example.domain.user.exception.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,18 +26,16 @@ public class UserController {
 
     @GetMapping(value = "/user/{id}")
     public User getUser(@PathVariable long id) {
-        return null;
-        //TODO implement
+        return userService.get(id);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/update")
-    public String updateUser(@RequestBody User user) {
-        //TODO use status code to manage response
-        User updatedUser = userService.update(user);
-        return String.format("User %s was updated", updatedUser.getName());
+    @PutMapping(value = "/user/update")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public void updateUser(@RequestBody User user) throws NoSuchUserException {
+        userService.update(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/user/add")
+    @PostMapping(value = "/user/add")
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addUser(@RequestBody @Validated User user) {
         if (userService.getByName(user.getName()).isPresent()) {
@@ -53,19 +45,19 @@ public class UserController {
         userService.add(user);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
-    public String removeUser(@PathVariable Long userId) {
-        User user = userService.get(userId);
+    @DeleteMapping(value = "/user/{userId}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public void removeUser(@PathVariable Long userId) throws NoSuchUserException {
         userService.remove(userId);
-        //TODO use status code to manage responsessss
-        return String.format("User %s was deleted", user.getName());
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleError(Exception ex) {
+    public String handleError(Exception ex) throws Exception {
+        if (AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class) != null) {
+            throw ex;
+        }
+
         return ex.getMessage();
     }
-
 }

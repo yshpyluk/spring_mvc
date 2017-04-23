@@ -3,6 +3,8 @@ build
 out
 gradle*
 !gradle/wrapper/gradle-wrapper.jar
+classes/
+lib/
 
 ### IntelliJ IDEA ###
 .idea

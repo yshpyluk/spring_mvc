@@ -33,5 +33,10 @@ public class User {
 		return UserDto.builder().name(this.name).build();
 	}
 
-
+	@Override
+	public boolean equals(Object obj) {
+		User compareUser = (User) obj;
+		return this.id == compareUser.getId() &&
+				this.getName().equals(compareUser.getName());
+	}
 }
