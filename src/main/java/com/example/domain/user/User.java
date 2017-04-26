@@ -29,6 +29,9 @@ public class User {
 	@NotNull
 	private String name;
 
+	@OneToOne
+	private Passport passport;
+
 	public UserDto convertToDto() {
 		return UserDto.builder().name(this.name).build();
 	}

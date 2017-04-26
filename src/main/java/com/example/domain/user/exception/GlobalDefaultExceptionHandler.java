@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalDefaultExceptionHandler {
 
-	@ExceptionHandler(RuntimeException.class)
-	public void hanlde() {
-		System.out.println("here");
-	}
+//	@ExceptionHandler(RuntimeException.class)
+//	public void hanlde() {
+//		System.out.println("here");
+//	}
 }

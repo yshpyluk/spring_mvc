@@ -29,8 +29,8 @@ public class UserService {
 		return userRepository.findByName(name);
 	}
 
-	public void add(User user) {
-		userRepository.save(user);
+	public void add(UserDto userDto) {
+		userRepository.save(userDto.convert());
 	}
 
 	public void remove(Long id) throws NoSuchUserException {
@@ -41,14 +41,14 @@ public class UserService {
 		userRepository.delete(id);
 	}
 
-	public User update(User user) throws NoSuchUserException {
-		User updateEntity = get(user.getId());
+	public User update(Long id, UserDto userDto) throws NoSuchUserException {
+		User updateEntity = get(id);
 		if (updateEntity == null) {
-			throw new NoSuchUserException(user.getId());
+			throw new NoSuchUserException(id);
 		}
 
-		updateEntity.setName(user.getName());
+		updateEntity.setName(userDto.getName());
 		userRepository.save(updateEntity);
-		return get(user.getId());
+		return get(id);
 	}
 }

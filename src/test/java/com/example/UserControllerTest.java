@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+//@ActiveProfiles("mysql")
 public class UserControllerTest {
 
 	@Autowired
@@ -97,7 +99,7 @@ public class UserControllerTest {
 
 		//Than
 		assertEquals(0, userRepository.count());
-		resultActions.andExpect(status().isBadRequest());
+		resultActions.andExpect(status().isConflict());
 	}
 
 	@Test
@@ -127,13 +129,11 @@ public class UserControllerTest {
 	@Test
 	public void testUpdateUser() throws Exception {
 		//Given
-		User user = new UserDto("Test User").convert();
-		userRepository.save(user);
-		User userToUpdate = userRepository.findByName(user.getName()).get();
+		User userToUpdate = userRepository.save(User.builder().name("Test User").build());
 		userToUpdate.setName("Another name");
 
 		//When
-		mockMvc.perform(put("/group/user/update")
+		mockMvc.perform(put("/group/user/update/{userId}", userToUpdate.getId())
 				.content(asJsonString(userToUpdate)).contentType(MediaType.APPLICATION_JSON));
 
 		//Than
@@ -146,12 +146,11 @@ public class UserControllerTest {
 	@Test
 	public void testUpdateUser_negative() throws Exception {
 		//Given
-		User user = new UserDto("Test User").convert();
-		user.setId(1L);
+		User user = User.builder().name("Test Name").build();
 		String body = asJsonString(user);
 
 		//When
-		mockMvc.perform(put("/group/user/update")
+		mockMvc.perform(put("/group/user/update/{userId}", 1L)
 				.content(body).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 
@@ -162,10 +161,9 @@ public class UserControllerTest {
 	@Test
 	public void testDeleteUser() throws Exception {
 		//Given
-		userRepository.save(new UserDto("first").convert());
-		userRepository.save(new UserDto("second").convert());
-		userRepository.save(new UserDto("third").convert());
-		User user = userRepository.findAll().get(1);
+		userRepository.save(User.builder().name("first").build());
+		User user = userRepository.save(User.builder().name("second").build());
+		userRepository.save(User.builder().name("third").build());
 
 		//When
 		ResultActions resultActions = mockMvc.perform(delete("/group/user/{id}", user.getId()))

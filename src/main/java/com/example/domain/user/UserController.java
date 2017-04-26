@@ -25,24 +25,24 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/{id}")
-    public User getUser(@PathVariable long id) {
+    public User getUser(@PathVariable Long id) {
         return userService.get(id);
     }
 
-    @PutMapping(value = "/user/update")
+    @PutMapping(value = "/user/update/{userId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public void updateUser(@RequestBody User user) throws NoSuchUserException {
-        userService.update(user);
+    public void updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) throws NoSuchUserException {
+        userService.update(userId, userDto);
     }
 
     @PostMapping(value = "/user/add")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addUser(@RequestBody @Validated User user) {
-        if (userService.getByName(user.getName()).isPresent()) {
+    public void addUser(@RequestBody @Validated UserDto userDto) {
+        if (userService.getByName(userDto.getName()).isPresent()) {
             //Create custom Runtime Exception for this case
             throw new RuntimeException("User exists");
         }
-        userService.add(user);
+        userService.add(userDto);
     }
 
     @DeleteMapping(value = "/user/{userId}")
