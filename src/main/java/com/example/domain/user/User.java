@@ -1,13 +1,11 @@
 package com.example.domain.user;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by yshpyluk on 4/5/17.
@@ -25,12 +23,28 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "name")
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+
 	@NotNull
 	private String name;
 
-	@OneToOne
+	@Convert(converter = BirthdayConverter.class)
+	private LocalDate birthday;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private Passport passport;
+
+	@ManyToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "user_id")
+	private List<Address> addresses;
+
+	@ElementCollection
+	@CollectionTable(name = "project",
+			joinColumns = @JoinColumn(name = "user_id")
+	)
+	@Column(name = "project")
+	private List<String> projects;
 
 	public UserDto convertToDto() {
 		return UserDto.builder().name(this.name).build();

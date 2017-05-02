@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by yshpyluk on 4/26/17.
+ * Created by yshpyluk on 5/1/17.
  */
 @Entity
 @NoArgsConstructor
@@ -16,11 +16,11 @@ import javax.persistence.Id;
 @Builder
 @Getter
 @Setter
-public class Passport {
-
+public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
-	private String serialNumber;
+	private int buildingNumber;
+	private String street;
 }
