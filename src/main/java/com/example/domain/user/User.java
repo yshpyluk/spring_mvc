@@ -35,11 +35,13 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Passport passport;
 
-	@ManyToMany(cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "user_id")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "join_address_user_table",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "address_id"))
 	private List<Address> addresses;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "project",
 			joinColumns = @JoinColumn(name = "user_id")
 	)

@@ -2,10 +2,8 @@ package com.example.domain.user;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by yshpyluk on 5/1/17.
@@ -23,4 +21,7 @@ public class Address {
 
 	private int buildingNumber;
 	private String street;
+
+	@ManyToMany(mappedBy = "addresses")
+	private List<User> users;
 }

@@ -13,6 +13,7 @@ public class BirthdayConverter implements AttributeConverter<LocalDate, String> 
 
 	@Override
 	public String convertToDatabaseColumn(LocalDate attribute) {
+		if (attribute == null) return null;
 		StringBuilder sb = new StringBuilder();
 		sb.append(attribute.getYear())
 				.append(SEPARATOR)
@@ -24,6 +25,7 @@ public class BirthdayConverter implements AttributeConverter<LocalDate, String> 
 
 	@Override
 	public LocalDate convertToEntityAttribute(String dbData) {
+		if (dbData==null) return null;
 		String[] temp = dbData.split(SEPARATOR);
 		return LocalDate.of(
 				Integer.parseInt(temp[0]),
