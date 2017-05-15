@@ -41,8 +41,8 @@ public class AssociationTest {
 		Passport passport = Passport.builder().serialNumber("LS12345PD").build();
 		Address address1 = Address.builder().buildingNumber(11).street("street1").build();
 		Address address2 = Address.builder().buildingNumber(22).street("street2").build();
-		addressRepository.save(address1);
-		addressRepository.save(address2);
+//		addressRepository.save(address1);
+//		addressRepository.save(address2);
 
 		List<Address> addresses = new ArrayList<>();
 		addresses.add(address1);
