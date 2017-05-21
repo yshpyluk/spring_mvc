@@ -1,5 +1,7 @@
 package com.example.domain.github;
 
+import com.example.domain.github.entity.dto.GitProjectDto;
+import com.example.domain.github.entity.dto.GitUserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -19,17 +21,23 @@ public class GitClient {
 		restTemplate = new RestTemplate();
 	}
 
-	public List<User> getUsers() {
+	public List<GitUserDto> getUsers() {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<User[]> responseEntity = restTemplate.getForEntity("https://api.github.com/users", User[].class);
-		List<User> users = Arrays.asList(responseEntity.getBody());
+		ResponseEntity<GitUserDto[]> responseEntity = restTemplate.getForEntity("https://api.github.com/users", GitUserDto[].class);
+		List<GitUserDto> users = Arrays.asList(responseEntity.getBody());
 		return users;
 	}
 
-	public List<Project> getUserRepos(String login) {
+	public GitUserDto getUser(String login) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Project[]> responseEntity = restTemplate.getForEntity("https://api.github.com/users/{login}/repos", Project[].class, login);
-		return Arrays.asList(responseEntity.getBody());
+		ResponseEntity<GitUserDto> responseEntity = restTemplate.getForEntity("https://api.github.com/users/{login}", GitUserDto.class, login);
+		GitUserDto user = responseEntity.getBody();
+		return user;
 	}
 
+	public List<GitProjectDto> getUserRepos(String login) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<GitProjectDto[]> responseEntity = restTemplate.getForEntity("https://api.github.com/users/{login}/repos", GitProjectDto[].class, login);
+		return Arrays.asList(responseEntity.getBody());
+	}
 }

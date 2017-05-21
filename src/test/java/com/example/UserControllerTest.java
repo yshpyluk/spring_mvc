@@ -1,28 +1,24 @@
 package com.example;
 
-import com.example.domain.user.UserDto;
 import com.example.domain.user.User;
+import com.example.domain.user.UserDto;
 import com.example.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.sun.org.apache.regexp.internal.RESyntaxException;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.jws.soap.SOAPBinding;
-
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
